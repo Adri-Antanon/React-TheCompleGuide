@@ -1,7 +1,13 @@
-export const ExpenseItem = () => {
+import "./styles.css";
+
+export const ExpenseItem = ({ date, title, amount }) => {
   return (
-    <div>
-      <h1>Expense Item component</h1>
+    <div className="expense-item">
+      <div>{date}</div>
+      <div className="expense-item__description">
+        <h2>{title}</h2>
+        <div className="expense-item__price">{amount}</div>
+      </div>
     </div>
   );
 };

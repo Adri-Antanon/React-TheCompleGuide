@@ -5,7 +5,7 @@ function App() {
     <div>
       <h2>Let's get started!</h2>
       <p>This is also visible!</p>
-      <ExpenseItem> </ExpenseItem>
+      <ExpenseItem title="Expense Item" date="21 SEP, 2021" amount="17.99" />
     </div>
   );
 }
