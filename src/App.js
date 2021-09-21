@@ -1,5 +1,13 @@
+import { ExpenseItem } from "./components";
+
 function App() {
-  return <h1>React Basics</h1>;
+  return (
+    <div>
+      <h2>Let's get started!</h2>
+      <p>This is also visible!</p>
+      <ExpenseItem> </ExpenseItem>
+    </div>
+  );
 }
 
 export default App;
