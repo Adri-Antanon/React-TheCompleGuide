@@ -1,10 +1,10 @@
-import { ExpenseItem } from "..";
+import { Card, ExpenseItem } from "..";
 
 import "./styles.css";
 
 export const ExpensesContainer = ({ expenses }) => {
   return (
-    <div className="expenses">
+    <Card className="expenses">
       {expenses.map((expense) => (
         <ExpenseItem
           amount={expense.amount}
@@ -13,6 +13,6 @@ export const ExpensesContainer = ({ expenses }) => {
           date={expense.date}
         />
       ))}
-    </div>
+    </Card>
   );
 };
