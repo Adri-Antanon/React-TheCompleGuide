@@ -1,7 +1,10 @@
 import { ExpenseDate, Card } from "..";
 import "./styles.css";
 
-export const ExpenseItem = ({ date, title, amount }) => {
+export const ExpenseItem = ({ date, title, amount, onHandleTitle }) => {
+  const onClickHandler = () => {
+    console.log("Clicked!");
+  };
   return (
     <Card className="expense-item">
       <ExpenseDate date={date} />
@@ -9,6 +12,7 @@ export const ExpenseItem = ({ date, title, amount }) => {
         <h2>{title}</h2>
         <div className="expense-item__price">{amount}</div>
       </div>
+      <button onClick={onClickHandler}>Change Title</button>
     </Card>
   );
 };
