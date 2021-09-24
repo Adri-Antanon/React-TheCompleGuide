@@ -3,56 +3,53 @@ import { useState } from "react";
 import "./styles.css";
 
 export const ExpenseForm = () => {
-  const [userInput, setUserInput] = useState({
-    enteredTitle: "",
-    enteredAmount: "",
-    enteredDate: "",
-  });
+  const [enteredTitle, setEnteredTitle] = useState("");
+  const [enteredAmount, setEnteredAmount] = useState("");
+  const [enteredDate, setEnteredDate] = useState("");
+
   const titleChangeHandler = (ev) => {
-    ev.preventDefault();
-    // setUserInput({
-    //   ...userInput,
-    //   enteredTitle: ev.target.value,
-    // });
-    setUserInput((prevState) => {
-      return {
-        ...prevState,
-        enteredTitle: ev.target.value,
-      };
-    });
+    setEnteredTitle(ev.target.value);
   };
 
   const amountChangeHandler = (ev) => {
-    ev.preventDefault();
-    setUserInput((prevState) => {
-      return {
-        ...prevState,
-        enteredAmount: ev.target.value,
-      };
-    });
+    setEnteredAmount(ev.target.value);
   };
 
   const dateChangeHandler = (ev) => {
-    ev.preventDefault();
-    setUserInput((prevState) => {
-      return {
-        ...prevState,
-        enteredDate: ev.target.value,
-      };
-    });
+    setEnteredDate(ev.target.value);
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    const expenseData = {
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date(enteredDate),
+    };
+
+    console.log(expenseData);
+    setEnteredAmount("");
+    setEnteredDate("");
+    setEnteredTitle("");
   };
 
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div className="new-expense__controls">
         <div className="new-expense__control">
           <label htmlFor="title">Title</label>
-          <input id="title" type="text" onChange={titleChangeHandler} />
+          <input
+            id="title"
+            value={enteredTitle}
+            type="text"
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label htmlFor="amount">Amount</label>
           <input
             id="amount"
+            value={enteredAmount}
             type="number"
             min="0.01"
             step="0.01"
@@ -63,6 +60,7 @@ export const ExpenseForm = () => {
           <label htmlFor="date">Date</label>
           <input
             id="date"
+            value={enteredDate}
             type="date"
             min="2019-01-01"
             max="2022-12-31"
