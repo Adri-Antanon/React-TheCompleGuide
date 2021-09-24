@@ -1,23 +1,23 @@
-import { ExpensesContainer } from "./components";
+import { ExpensesContainer } from "./components/Expenses";
 
 function App() {
   const expenses = [
     {
       id: "e1",
       title: "Car Insurance",
-      amount: 298.21,
+      amount: Math.random() * 1000,
       date: new Date(2021, Math.random() * 12, Math.random() * 28),
     },
     {
       id: "e2",
       title: "Car Insurance",
-      amount: 298.21,
+      amount: Math.random() * 1000,
       date: new Date(2021, Math.random() * 12, Math.random() * 28),
     },
     {
       id: "e3",
       title: "Car Insurance",
-      amount: 298.21,
+      amount: Math.random() * 1000,
       date: new Date(2021, Math.random() * 12, Math.random() * 28),
     },
   ];
