@@ -11,20 +11,24 @@ function App() {
     },
     {
       id: "e2",
-      title: "Car Insurance",
+      title: "New TV",
       amount: Math.random() * 1000,
       date: new Date(2021, Math.random() * 12, Math.random() * 28),
     },
     {
       id: "e3",
-      title: "Car Insurance",
+      title: "Xiaomi Redmi 39",
       amount: Math.random() * 1000,
       date: new Date(2021, Math.random() * 12, Math.random() * 28),
     },
   ];
+
+  const addExpenseHandler = (expense) => {
+    console.log("In app.js", expense);
+  };
   return (
     <div>
-      <NewExpense />
+      <NewExpense onAddExpense={addExpenseHandler} />
       <ExpensesContainer expenses={expenses} />
     </div>
   );
