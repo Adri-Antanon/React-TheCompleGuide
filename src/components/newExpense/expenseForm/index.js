@@ -3,9 +3,6 @@ import { useState } from "react";
 import "./styles.css";
 
 export const ExpenseForm = () => {
-  //   const [enteredTitle, setEnteredTitle] = useState("");
-  //   const [enteredAmount, setEnteredAmount] = useState(0);
-  //   const [enteredDate, setEnteredDate] = useState("");
   const [userInput, setUserInput] = useState({
     enteredTitle: "",
     enteredAmount: "",
@@ -13,25 +10,35 @@ export const ExpenseForm = () => {
   });
   const titleChangeHandler = (ev) => {
     ev.preventDefault();
-    setUserInput({
-      ...userInput,
-      enteredTitle: ev.target.value,
+    // setUserInput({
+    //   ...userInput,
+    //   enteredTitle: ev.target.value,
+    // });
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        enteredTitle: ev.target.value,
+      };
     });
   };
 
   const amountChangeHandler = (ev) => {
     ev.preventDefault();
-    setUserInput({
-      ...userInput,
-      enteredAmount: ev.target.value,
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        enteredAmount: ev.target.value,
+      };
     });
   };
 
   const dateChangeHandler = (ev) => {
     ev.preventDefault();
-    setUserInput({
-      ...userInput,
-      enteredDate: ev.target.value,
+    setUserInput((prevState) => {
+      return {
+        ...prevState,
+        enteredDate: ev.target.value,
+      };
     });
   };
 
