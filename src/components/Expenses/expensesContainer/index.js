@@ -6,22 +6,21 @@ import { Card } from "../../UI";
 import "./styles.css";
 
 export const ExpensesContainer = ({ expenses }) => {
-  const [selectedYear, setSelectedYear] = useState("2020");
+  const [filteredYear, setfilteredYear] = useState("2020");
 
-  const handleSelectYear = (year) => {
-    setSelectedYear(year);
-    console.log(selectedYear);
+  const filterChangeHandler = (selectedYear) => {
+    setfilteredYear(selectedYear);
   };
 
   return (
     <Card className="expenses">
       <ExpensesFilter
-        selected={selectedYear}
-        onSelectedYear={handleSelectYear}
+        selected={filteredYear}
+        onChangeFilter={filterChangeHandler}
       />
       {expenses.map((expense) => (
         <ExpenseItem
-          amount={expense.amount.toFixed(2)}
+          amount={expense.amount}
           key={expense.id}
           title={expense.title}
           date={expense.date}

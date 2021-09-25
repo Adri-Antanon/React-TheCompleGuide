@@ -1,8 +1,8 @@
 import "./styles.css";
 
-export const ExpensesFilter = ({ onSelectedYear, selectedYear }) => {
+export const ExpensesFilter = ({ onChangeFilter, selectedYear }) => {
   const dropdownChangeHandler = (event) => {
-    onSelectedYear(event.target.value);
+    onChangeFilter(event.target.value);
   };
   return (
     <div className="expenses-filter">
