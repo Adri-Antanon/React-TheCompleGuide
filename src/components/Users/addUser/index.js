@@ -3,7 +3,7 @@ import { Card, Button } from "../../UI";
 
 import classes from "./styles.module.css";
 
-export const AddUser = (props) => {
+export const AddUser = ({ onAddUser }) => {
   const [enteredUsername, setEnteredUsername] = useState("");
   const [enteredAge, setEnteredAge] = useState("");
 
@@ -15,7 +15,9 @@ export const AddUser = (props) => {
     if (+enteredAge < 1) {
       return;
     }
-    console.log(enteredUsername, enteredAge);
+
+    onAddUser(enteredUsername, enteredAge);
+
     setEnteredUsername("");
     setEnteredAge("");
   };

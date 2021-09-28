@@ -6,11 +6,11 @@ export const UserList = ({ users }) => {
   return (
     <Card classname={classes.users}>
       <ul>
-        {users.map((user) => {
+        {users.map((user) => (
           <li key={user.id}>
             {user.name} ({user.age} years old)
-          </li>;
-        })}
+          </li>
+        ))}
       </ul>
     </Card>
   );
