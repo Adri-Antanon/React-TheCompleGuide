@@ -41,7 +41,7 @@ export const AddUser = (props) => {
         />
         <label htmlFor="age">Age (Years)</label>
         <input
-          type="text"
+          type="number"
           name="age"
           id="age"
           value={enteredAge}
