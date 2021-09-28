@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Wrapper } from "../../Helpers";
 import { Card, Button, ErrorModal } from "../../UI";
 
 import classes from "./styles.module.css";
@@ -45,7 +44,7 @@ export const AddUser = ({ onAddUser }) => {
   };
 
   return (
-    <Wrapper>
+    <>
       {error && (
         <ErrorModal
           onError={errorHandler}
@@ -75,6 +74,6 @@ export const AddUser = ({ onAddUser }) => {
           <Button type="submit">Add User</Button>
         </form>
       </Card>
-    </Wrapper>
+    </>
   );
 };
