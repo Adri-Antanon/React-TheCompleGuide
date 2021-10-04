@@ -1,34 +1,15 @@
 import React, { useEffect, useState, useReducer } from "react";
 
+import {
+  USER_INPUT,
+  INPUT_BLUR,
+  passwordReducer,
+  emailReducer,
+} from "../../lib/authReducer";
+
 import Card from "../UI/Card/Card";
 import classes from "./Login.module.css";
 import Button from "../UI/Button/Button";
-
-const USER_INPUT = "USER_INPUT";
-const INPUT_BLUR = "INPUT_BLUR";
-
-const emailReducer = (state, action) => {
-  switch (action.type) {
-    case USER_INPUT:
-      return { value: action.val, isValid: action.val.includes("@") };
-    case INPUT_BLUR:
-      return { value: state.value, isValid: state.value.includes("@") };
-    default:
-      return { value: "", isValid: false };
-  }
-};
-
-const passwordReducer = (state, action) => {
-  switch (action.type) {
-    case USER_INPUT:
-      return { value: action.val, isValid: action.val.trim() > 6 };
-    case INPUT_BLUR:
-      return { value: state.value, isValid: state.value.trim() > 6 };
-
-    default:
-      return { value: "", isValid: false };
-  }
-};
 
 const Login = (props) => {
   const [formIsValid, setFormIsValid] = useState(false);
