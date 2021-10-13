@@ -1,6 +1,9 @@
+import React from "react";
+import MyParagraph from "./MyParagraph";
+
 const DemoOutput = ({ show }) => {
   console.log("DemoOutput");
-  return <p>{show ? "This is new!" : ""}</p>;
+  return <MyParagraph>{show ? "This is new!" : ""}</MyParagraph>;
 };
 
-export default DemoOutput;
+export default React.memo(DemoOutput);
