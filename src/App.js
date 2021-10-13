@@ -1,5 +1,11 @@
+import Users from "./components/Users";
+
 function App() {
-  return <h1>React - The Complete Guide</h1>;
+  return (
+    <div>
+      <Users />
+    </div>
+  );
 }
 
 export default App;
