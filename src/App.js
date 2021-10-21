@@ -6,21 +6,45 @@ import "./App.css";
 function App() {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   async function fetchMoviesHandler() {
     setIsLoading(true);
-    const response = await fetch("https://www.swapi.tech/api/films/");
-    const data = await response.json();
-    const transformedMovies = data.result.map((movieData) => {
-      return {
-        id: movieData.properties.episode_id,
-        title: movieData.properties.title,
-        openingText: movieData.properties.opening_crawl,
-        releaseDate: movieData.properties.release_date,
-      };
-    });
-    setMovies(transformedMovies);
+    setError(null);
+    try {
+      const response = await fetch("https://www.swapi.tech/api/films/");
+      if (!response.ok) {
+        throw new Error("Something went wrong!");
+      }
+      const data = await response.json();
+
+      const transformedMovies = data.result.map((movieData) => {
+        return {
+          id: movieData.properties.episode_id,
+          title: movieData.properties.title,
+          openingText: movieData.properties.opening_crawl,
+          releaseDate: movieData.properties.release_date,
+        };
+      });
+      setMovies(transformedMovies);
+    } catch (error) {
+      setError(error.message);
+    }
     setIsLoading(false);
+  }
+
+  let content = <p>Found no movies</p>;
+
+  if (movies.length > 0) {
+    content = <MoviesList movies={movies} />;
+  }
+
+  if (error) {
+    content = <p>{error}</p>;
+  }
+
+  if (isLoading) {
+    content = <p>Loding...</p>;
   }
 
   return (
@@ -29,9 +53,10 @@ function App() {
         <button onClick={fetchMoviesHandler}>Fetch Movies</button>
       </section>
       <section>
-        {!isLoading && <MoviesList movies={movies} />}
-        {!isLoading && movies.length === 0 && <p>Found no movies.</p>}
-        {isLoading && <p>Loading...</p>}
+        {!isLoading && content}
+        {!isLoading && !error && movies.length === 0 && content}
+        {!isLoading && error && content}
+        {isLoading && content}
       </section>
     </React.Fragment>
   );
