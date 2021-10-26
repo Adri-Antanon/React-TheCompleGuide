@@ -1,5 +1,11 @@
+import SimpleInput from './components/SimpleInput';
+
 function App() {
-  return <h1>React - The Complete Guide</h1>;
+  return (
+    <div className="app">
+      <SimpleInput />
+    </div>
+  );
 }
 
 export default App;
