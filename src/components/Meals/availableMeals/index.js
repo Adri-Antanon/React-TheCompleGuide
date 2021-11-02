@@ -8,10 +8,12 @@ const DB_URL =
 
 export const AvailableMeals = () => {
   const [meals, setMeals] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [httpError, setHttpError] = useState();
 
   const fetchMealsHandler = useCallback(async () => {
     setIsLoading(true);
+    setHttpError(null);
     try {
       const response = await fetch(DB_URL);
       if (!response.ok) {
@@ -32,7 +34,7 @@ export const AvailableMeals = () => {
 
       setMeals(loadedMeals);
     } catch (error) {
-      console.log(error.message);
+      setHttpError(error.message);
     }
     setIsLoading(false);
   }, []);
@@ -41,17 +43,30 @@ export const AvailableMeals = () => {
     fetchMealsHandler();
   }, [fetchMealsHandler]);
 
-  const mealList = isLoading
-    ? []
-    : meals.map((meal) => (
-        <MealItem
-          key={meal.id}
-          id={meal.id}
-          name={meal.name}
-          description={meal.description}
-          price={meal.price}
-        />
-      ));
+  if (isLoading) {
+    return (
+      <section className={classes.mealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+  if (httpError) {
+    return (
+      <section className={classes.mealsError}>
+        <p>{httpError}</p>
+      </section>
+    );
+  }
+
+  const mealList = meals.map((meal) => (
+    <MealItem
+      key={meal.id}
+      id={meal.id}
+      name={meal.name}
+      description={meal.description}
+      price={meal.price}
+    />
+  ));
 
   return (
     <section className={classes.meals}>
