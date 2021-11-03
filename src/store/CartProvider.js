@@ -9,6 +9,7 @@ const defaultCartState = {
 
 const ADD = "ADD";
 const REMOVE = "REMOVE";
+const CLEAR = "CLEAR";
 
 const cartReducer = (state, action) => {
   switch (action.type) {
@@ -65,6 +66,9 @@ const cartReducer = (state, action) => {
       };
     }
 
+    case CLEAR:
+      return defaultCartState;
+
     default:
       return defaultCartState;
   }
@@ -81,11 +85,17 @@ const CartProvider = ({ children }) => {
   const removeItemToCartHandler = (id) => {
     dispatchCartAction({ type: REMOVE, id: id });
   };
+
+  const clearCartHandler = () => {
+    dispatchCartAction({ type: CLEAR });
+  };
+
   const cartContext = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     addItem: addItemToCartHandler,
     removeItem: removeItemToCartHandler,
+    clearCart: clearCartHandler,
   };
   return (
     <CartContext.Provider value={cartContext}>{children}</CartContext.Provider>

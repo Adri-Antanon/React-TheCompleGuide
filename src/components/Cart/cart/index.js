@@ -11,6 +11,8 @@ const DB_URL =
 
 export const Cart = ({ onClose }) => {
   const [isCheckout, setIsCheckout] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [didSubmit, setDidSubmit] = useState(false);
   const cartCtx = useContext(CartContext);
 
   const totalAmount = `${cartCtx.totalAmount.toFixed(2)}€`;
@@ -27,14 +29,18 @@ export const Cart = ({ onClose }) => {
     setIsCheckout((previousState) => !previousState);
   };
 
-  const submitOrderHandler = (userData) => {
-    fetch(DB_URL, {
+  const submitOrderHandler = async (userData) => {
+    setIsSubmitting(true);
+    await fetch(DB_URL, {
       method: "POST",
       body: JSON.stringify({
         user: userData,
         orderedItems: cartCtx.items,
       }),
     });
+    setIsSubmitting(false);
+    setDidSubmit(true);
+    cartCtx.clearCart();
   };
 
   const cartItems = (
@@ -65,8 +71,8 @@ export const Cart = ({ onClose }) => {
     </div>
   );
 
-  return (
-    <Modal onClose={onClose}>
+  const cartModalContent = (
+    <>
       {cartItems}
       <div className={classes.total}>
         <span>Total amount</span>
@@ -76,6 +82,26 @@ export const Cart = ({ onClose }) => {
         <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />
       )}
       {!isCheckout && modalActions}
+    </>
+  );
+
+  const isSubmittingModalContent = <p>Sending order data...</p>;
+  const didSubmitModalContent = (
+    <>
+      <p>Successfully sent the order!</p>
+      <div className={classes.actions}>
+        <button onClick={onClose} className={classes.button}>
+          Close
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <Modal onClose={onClose}>
+      {!isSubmitting && !didSubmit && cartModalContent}
+      {isSubmitting && isSubmittingModalContent}
+      {!isSubmitting && didSubmit && didSubmitModalContent}
     </Modal>
   );
 };
