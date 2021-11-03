@@ -6,6 +6,9 @@ import { CartItem, Checkout } from "../";
 import classes from "./styles.module.css";
 import CartContext from "../../../store/cart-context";
 
+const DB_URL =
+  "https://reactthecompleteguide-72d27-default-rtdb.firebaseio.com/orders.json";
+
 export const Cart = ({ onClose }) => {
   const [isCheckout, setIsCheckout] = useState(false);
   const cartCtx = useContext(CartContext);
@@ -22,6 +25,16 @@ export const Cart = ({ onClose }) => {
 
   const orderHandler = () => {
     setIsCheckout((previousState) => !previousState);
+  };
+
+  const submitOrderHandler = (userData) => {
+    fetch(DB_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        user: userData,
+        orderedItems: cartCtx.items,
+      }),
+    });
   };
 
   const cartItems = (
@@ -59,7 +72,9 @@ export const Cart = ({ onClose }) => {
         <span>Total amount</span>
         <span>{totalAmount}</span>
       </div>
-      {isCheckout && <Checkout onCancel={onClose} />}
+      {isCheckout && (
+        <Checkout onConfirm={submitOrderHandler} onCancel={onClose} />
+      )}
       {!isCheckout && modalActions}
     </Modal>
   );

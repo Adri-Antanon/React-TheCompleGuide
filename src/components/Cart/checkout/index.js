@@ -2,9 +2,9 @@ import { useRef, useState } from "react/cjs/react.development";
 import classes from "./styles.module.css";
 
 const isEmpty = (value) => value.trim() === "";
-const isFiveChars = (value) => value.trim === 5;
+const isFiveChars = (value) => value.trim().length === 5;
 
-export const Checkout = ({ onCancel }) => {
+export const Checkout = ({ onConfirm, onCancel }) => {
   const [formInputsValidity, setFormInputsValidity] = useState({
     name: true,
     street: true,
@@ -36,6 +36,8 @@ export const Checkout = ({ onCancel }) => {
       postalCode: enteredPostalCodeIsValid,
     });
 
+    console.log(formInputsValidity);
+
     const formIsValid =
       enteredNameIsValid &&
       enteredStreetIsValid &&
@@ -45,6 +47,13 @@ export const Checkout = ({ onCancel }) => {
     if (!formIsValid) {
       return;
     }
+
+    onConfirm({
+      name: enteredName,
+      street: enteredStreet,
+      city: enteredCity,
+      postalCode: enteredPostalCode,
+    });
   };
 
   const nameControlClasses = `${classes.control} ${

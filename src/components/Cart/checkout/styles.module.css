@@ -1,12 +1,11 @@
 .form {
   margin: 1rem 0;
-  height: 17rem;
+  height: 19rem;
   overflow: auto;
 }
 
 .control {
   margin-bottom: 0.5rem;
-  text-align: left;
 }
 
 .control label {
