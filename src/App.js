@@ -1,5 +1,10 @@
+import Counter from './components/Counter';
+
+
 function App() {
-  return <h1>React - The Complete Guide</h1>;
+  return (
+    <Counter />
+  );
 }
 
 export default App;
