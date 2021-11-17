@@ -14,3 +14,7 @@ export const DUMMY_QUOTES = [
 
 export const FIREBASE_DOMAIN =
   "https://reactthecompleteguide-72d27-default-rtdb.firebaseio.com/";
+
+export const SEND = "SEND";
+export const SUCCESS = "SUCCESS";
+export const ERROR = "ERROR";
