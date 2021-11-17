@@ -11,3 +11,6 @@ export const DUMMY_QUOTES = [
   },
   { id: "q3", author: "Dani", text: "Learning JS is fun!" },
 ];
+
+export const FIREBASE_DOMAIN =
+  "https://reactthecompleteguide-72d27-default-rtdb.firebaseio.com/";
