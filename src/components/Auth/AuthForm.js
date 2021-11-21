@@ -1,15 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import {
   API_KEY,
   FIREBASE_LOGIN,
   FIREBASE_SIGNUP,
 } from "../../config/constants";
+import AuthContext from "../../store/AuthContext";
 
 import classes from "./AuthForm.module.css";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  const authCtx = useContext(AuthContext);
 
   const passwordInputRef = useRef();
   const emailInputRef = useRef();
@@ -18,7 +21,6 @@ const AuthForm = () => {
     setIsLogin((prevState) => !prevState);
   };
 
-  // Pasar a async/await
   const submitHandler = (event) => {
     event.preventDefault();
 
@@ -58,6 +60,7 @@ const AuthForm = () => {
       })
       .then((data) => {
         console.log(data);
+        authCtx.login(data.idToken);
       })
       .catch((err) => {
         alert(err.message);
