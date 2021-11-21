@@ -1,5 +1,9 @@
 import { useState, useRef } from "react";
-import { API_KEY, FIREBASE_SIGNUP } from "../../config/constants";
+import {
+  API_KEY,
+  FIREBASE_LOGIN,
+  FIREBASE_SIGNUP,
+} from "../../config/constants";
 
 import classes from "./AuthForm.module.css";
 
@@ -23,32 +27,41 @@ const AuthForm = () => {
 
     // optional: Add validation
     setIsLoading(true);
-
+    let url;
     if (isLogin) {
+      url = `${FIREBASE_LOGIN}${API_KEY}`;
     } else {
-      fetch(`${FIREBASE_SIGNUP}${API_KEY}`, {
-        method: "POST",
-        body: JSON.stringify({
-          email: enteredEmail,
-          password: enteredPassword,
-          returnSecureToken: true,
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((res) => {
+      url = `${FIREBASE_SIGNUP}${API_KEY}`;
+    }
+    fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        email: enteredEmail,
+        password: enteredPassword,
+        returnSecureToken: true,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
         setIsLoading(false);
         if (res.ok) {
-          // ...
+          return res.json();
         } else {
           return res.json().then((data) => {
             const errorMessage = data.error.message ?? "Authentication failed!";
 
-            alert(errorMessage);
+            throw new Error(errorMessage);
           });
         }
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        alert(err.message);
       });
-    }
   };
 
   return (
