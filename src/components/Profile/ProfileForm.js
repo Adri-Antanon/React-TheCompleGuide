@@ -1,4 +1,6 @@
 import { useRef, useContext } from "react";
+import { useHistory } from "react-router";
+
 import { API_KEY, FIREBASE_RESET_PASSWORD } from "../../config/constants";
 import AuthContext from "../../store/AuthContext";
 
@@ -6,7 +8,7 @@ import classes from "./ProfileForm.module.css";
 
 const ProfileForm = () => {
   const newPasswordInputRef = useRef();
-
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
 
   const submitHandler = (event) => {
@@ -31,6 +33,7 @@ const ProfileForm = () => {
       },
     }).then((res) => {
       //Asumo que siempre va a funcionar y no va a haber problemas
+      history.replace("/");
     });
   };
   return (
