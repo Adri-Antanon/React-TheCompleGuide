@@ -1,8 +1,9 @@
+import TodoItem from "./TodoItem";
 const Todos: React.FC<TodosProps> = (props) => {
   return (
     <ul>
       {props.items.map((item: TodosItem) => (
-        <li key={item.id}>{item.title}</li>
+        <TodoItem key={item.text} text={item.text} />
       ))}
     </ul>
   );

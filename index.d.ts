@@ -1,3 +1,3 @@
-type TodosItem = { title: string; id: string };
+type TodosItem = { text: string };
 
 type TodosProps = { items: TodosItem[] };
