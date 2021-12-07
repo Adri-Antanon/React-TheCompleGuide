@@ -1,8 +1,10 @@
 import TodoItem from "./TodoItem";
-const Todos: React.FC<TodosProps> = (props) => {
+
+import classes from "./Todos.module.css";
+const Todos: React.FC<TodosProps> = ({ items }) => {
   return (
-    <ul>
-      {props.items.map((item: TodosItem) => (
+    <ul className={classes.todos}>
+      {items.map((item: TodosItem) => (
         <TodoItem key={item.text} text={item.text} />
       ))}
     </ul>
