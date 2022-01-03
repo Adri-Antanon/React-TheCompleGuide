@@ -16,7 +16,7 @@ const Search = React.memo(({ onLoadIngredients }) => {
             enteredFilter.length === 0
               ? ""
               : `?orderBy="title"&equalTo="${enteredFilter}"`;
-          const response = await fetch(BASE_URL + query);
+          const response = await fetch(BASE_URL + "/ingredients.json" + query);
           const responseData = await response.json();
           const loadedIngredients = [];
           for (const key in responseData) {
