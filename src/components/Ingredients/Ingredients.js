@@ -12,67 +12,69 @@ import ingredientReducer, {
   SET,
 } from "../../reducers/ingredientsReducer";
 
-import httpReducer, {
-  CLEAR,
-  ERROR,
-  RESPONSE,
-  SEND,
-} from "../../reducers/httpReducer";
+import useHttp from "../../hooks/httpHook";
+import { useEffect } from "react";
 
 const Ingredients = (props) => {
   const [ingredients, dispatchIngredients] = useReducer(ingredientReducer, []);
-  const [httpState, dispatchHttp] = useReducer(httpReducer, {
-    loading: false,
-    error: null,
-  });
+  const {
+    data,
+    error,
+    isLoading,
+    sendRequest,
+    requestExtra,
+    requestIdentifier,
+  } = useHttp();
+  // Manejo del estado con useReducer, es un poco más complejo que useState pero sirve para manejar varios estados a la vez
+  // const [httpState, dispatchHttp] = useReducer(httpReducer, {
+  //   loading: false,
+  //   error: null,
+  // });
+
+  // Manejo del estado con useState
   // const [ingredients, setIngredients] = useState([]);
   // const [isLoading, setIsLoading] = useState(false);
   // const [error, setError] = useState();
+
+  useEffect(() => {
+    if (!isLoading && !error && requestIdentifier === "REMOVE_INGREDIENT") {
+      dispatchIngredients({ type: DELETE, id: requestExtra });
+    } else if (!isLoading && !error && requestIdentifier === "ADD_INGREDIENT") {
+      dispatchIngredients({
+        type: ADD,
+        ingredient: { id: data.name, ...requestExtra },
+      });
+    }
+  }, [data, requestExtra, requestIdentifier, isLoading, error]);
 
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
     dispatchIngredients({ type: SET, ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = useCallback(async (ingredient) => {
-    try {
-      dispatchHttp({ type: SEND });
-      const response = await fetch(BASE_URL + "/ingredients.json", {
-        method: "POST",
-        body: JSON.stringify(ingredient),
-        headers: { "Content-Type": "application/json" },
-      });
-      const ingredientId = await response.json();
-      dispatchHttp({ type: RESPONSE });
-
-      dispatchIngredients({
-        type: ADD,
-        ingredient: { id: ingredientId.name, ...ingredient },
-      });
-    } catch (error) {
-      dispatchHttp({ type: ERROR, error: "Something went wrong!" });
-    }
+    const url = BASE_URL + "/ingredients.json";
+    const method = "POST";
+    await sendRequest(
+      url,
+      method,
+      JSON.stringify(ingredient),
+      ingredient,
+      "ADD_INGREDIENT"
+    );
   }, []);
 
-  const removeIngredientHandler = useCallback(async (ingredientID) => {
-    try {
-      // setIsLoading(true);
-      dispatchHttp({ type: SEND });
-      await fetch(BASE_URL + `/ingredients/${ingredientID}.json`, {
-        method: "DELETE",
-      });
-      // setIsLoading(false);
-      dispatchHttp({ type: RESPONSE });
+  const removeIngredientHandler = useCallback(
+    async (ingredientID) => {
+      const url = BASE_URL + `/ingredients/${ingredientID}.json`;
+      const method = "DELETE";
 
-      dispatchIngredients({ type: DELETE, id: ingredientID });
-    } catch (error) {
-      // setError("Something went wrong!");
-      // setIsLoading(false);
-      dispatchHttp({ type: ERROR, error: "Something went wrong!" });
-    }
-  }, []);
+      await sendRequest(url, method, null, ingredientID, "REMOVE_INGREDIENT");
+    },
+    [sendRequest]
+  );
 
   const clearError = useCallback(() => {
-    dispatchHttp({ type: CLEAR });
+    // dispatchHttp({ type: CLEAR });
   }, []);
 
   const ingredientList = useMemo(() => {
@@ -86,12 +88,10 @@ const Ingredients = (props) => {
 
   return (
     <div className="App">
-      {httpState.error && (
-        <ErrorModal onClose={clearError}>{httpState.error}</ErrorModal>
-      )}
+      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
-        loading={httpState.loading}
+        loading={isLoading}
       />
 
       <section>
