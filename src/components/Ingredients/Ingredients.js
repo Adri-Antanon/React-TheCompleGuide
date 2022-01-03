@@ -24,6 +24,7 @@ const Ingredients = (props) => {
     sendRequest,
     requestExtra,
     requestIdentifier,
+    clear,
   } = useHttp();
   // Manejo del estado con useReducer, es un poco más complejo que useState pero sirve para manejar varios estados a la vez
   // const [httpState, dispatchHttp] = useReducer(httpReducer, {
@@ -51,17 +52,20 @@ const Ingredients = (props) => {
     dispatchIngredients({ type: SET, ingredients: filteredIngredients });
   }, []);
 
-  const addIngredientHandler = useCallback(async (ingredient) => {
-    const url = BASE_URL + "/ingredients.json";
-    const method = "POST";
-    await sendRequest(
-      url,
-      method,
-      JSON.stringify(ingredient),
-      ingredient,
-      "ADD_INGREDIENT"
-    );
-  }, []);
+  const addIngredientHandler = useCallback(
+    async (ingredient) => {
+      const url = BASE_URL + "/ingredients.json";
+      const method = "POST";
+      await sendRequest(
+        url,
+        method,
+        JSON.stringify(ingredient),
+        ingredient,
+        "ADD_INGREDIENT"
+      );
+    },
+    [sendRequest]
+  );
 
   const removeIngredientHandler = useCallback(
     async (ingredientID) => {
@@ -72,10 +76,6 @@ const Ingredients = (props) => {
     },
     [sendRequest]
   );
-
-  const clearError = useCallback(() => {
-    // dispatchHttp({ type: CLEAR });
-  }, []);
 
   const ingredientList = useMemo(() => {
     return (
@@ -88,7 +88,7 @@ const Ingredients = (props) => {
 
   return (
     <div className="App">
-      {error && <ErrorModal onClose={clearError}>{error}</ErrorModal>}
+      {error && <ErrorModal onClose={clear}>{error}</ErrorModal>}
       <IngredientForm
         onAddIngredient={addIngredientHandler}
         loading={isLoading}

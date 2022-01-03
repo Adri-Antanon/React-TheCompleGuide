@@ -16,6 +16,8 @@ const useHttp = () => {
     identifier: null,
   });
 
+  const clear = () => dispatchHttp({ type: CLEAR });
+
   const sendRequest = useCallback(
     async (url, method, body, requestExtra, requestIdentifier) => {
       try {
@@ -48,6 +50,7 @@ const useHttp = () => {
     sendRequest: sendRequest,
     requestExtra: httpState.extra,
     requestIdentifier: httpState.identifier,
+    clear: clear,
   };
 };
 

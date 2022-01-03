@@ -3,6 +3,14 @@ export const RESPONSE = "RESPONSE";
 export const ERROR = "ERROR";
 export const CLEAR = "CLEAR";
 
+const initialState = {
+  loading: false,
+  error: null,
+  data: null,
+  extra: null,
+  identifier: null,
+};
+
 const httpReducer = (currentHttpState, action) => {
   switch (action.type) {
     case SEND:
@@ -23,8 +31,7 @@ const httpReducer = (currentHttpState, action) => {
     case ERROR:
       return { loading: false, error: action.error };
     case CLEAR:
-      return { ...currentHttpState, error: null };
-
+      return initialState;
     default:
       throw new Error("Should not be reached!");
   }
