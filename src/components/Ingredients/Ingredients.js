@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useReducer, useState, useCallback } from "react";
 
 import IngredientList from "./IngredientList";
 import IngredientForm from "./IngredientForm";
@@ -6,13 +6,28 @@ import Search from "./Search";
 import ErrorModal from "../UI/ErrorModal";
 import { BASE_URL } from "../../config/constants";
 
+const ingredientReducer = (currentIngredients, action) => {
+  switch (action.type) {
+    case "SET":
+      return action.ingredients;
+    case "ADD":
+      return [...currentIngredients, action.ingredient];
+    case "DELETE":
+      return currentIngredients.filter((ing) => ing.id !== action.id);
+
+    default:
+      throw new Error("Should not get there!");
+  }
+};
+
 const Ingredients = (props) => {
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, dispatch] = useReducer(ingredientReducer, []);
+  // const [ingredients, setIngredients] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
   const filteredIngredientsHandler = useCallback((filteredIngredients) => {
-    setIngredients(filteredIngredients);
+    dispatch({ type: "SET", ingredients: filteredIngredients });
   }, []);
 
   const addIngredientHandler = async (ingredient) => {
@@ -26,10 +41,10 @@ const Ingredients = (props) => {
       const ingredientId = await response.json();
       setIsLoading(false);
 
-      setIngredients((prevIngredients) => [
-        ...prevIngredients,
-        { id: ingredientId.name, ...ingredient },
-      ]);
+      dispatch({
+        type: "ADD",
+        ingredient: { id: ingredientId.name, ...ingredient },
+      });
     } catch (error) {
       setError("Something went wrong!");
       setIsLoading(false);
@@ -39,13 +54,11 @@ const Ingredients = (props) => {
   const removeIngredientHandler = async (ingredientID) => {
     try {
       setIsLoading(true);
-      await fetch(BASE_URL + `/ingredients/${ingredientID}.jso`, {
+      await fetch(BASE_URL + `/ingredients/${ingredientID}.json`, {
         method: "DELETE",
       });
       setIsLoading(false);
-      setIngredients((prevIngredients) =>
-        prevIngredients.filter((ingredient) => ingredient.id !== ingredientID)
-      );
+      dispatch({ type: "DELETE", id: ingredientID });
     } catch (error) {
       setError("Something went wrong!");
       setIsLoading(false);
